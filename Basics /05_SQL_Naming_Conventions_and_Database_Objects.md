@@ -403,9 +403,292 @@ A Schema helps organize database objects and improves security and manageability
 
 ---
 
-# Summary
+# Important Points
 
-* Naming conventions improve code readability and maintainability.
-* Database objects are structures used to store and manage data.
-* Important database objects include Databases, Schemas, Tables, Views, Indexes, Stored Procedures, Functions, and Triggers.
-* Following standard naming conventions and understanding database objects are essential skills for SQL developers, Data Analysts, Data Engineers, and BI professionals.
+## CREATE DATABASE IF NOT EXISTS
+
+The `IF NOT EXISTS` clause prevents an error if the database already exists.
+
+### Syntax
+
+```sql
+CREATE DATABASE IF NOT EXISTS company_db;
+```
+
+### Why Use It?
+
+Without `IF NOT EXISTS`:
+
+```sql
+CREATE DATABASE company_db;
+```
+
+If the database already exists, MySQL will throw an error.
+
+Using `IF NOT EXISTS` makes scripts safer and reusable.
+
+---
+
+## CREATE TABLE IF NOT EXISTS
+
+The `IF NOT EXISTS` clause prevents an error if the table already exists.
+
+### Syntax
+
+```sql
+CREATE TABLE IF NOT EXISTS employees (
+    employee_id INT PRIMARY KEY,
+    employee_name VARCHAR(100)
+);
+```
+
+### Why Use It?
+
+When running scripts multiple times, table creation may fail if the table already exists.
+
+Using `IF NOT EXISTS` prevents unnecessary errors.
+
+---
+
+## DROP TABLE IF EXISTS
+
+The `IF EXISTS` clause prevents an error if the table does not exist.
+
+### Syntax
+
+```sql
+DROP TABLE IF EXISTS employees;
+```
+
+### Why Use It?
+
+Without `IF EXISTS`:
+
+```sql
+DROP TABLE employees;
+```
+
+MySQL generates an error if the table is not present.
+
+Using `IF EXISTS` makes scripts safer.
+
+---
+
+## SHOW DATABASES
+
+Displays all databases available in the database server.
+
+### Syntax
+
+```sql
+SHOW DATABASES;
+```
+
+### Example Output
+
+```text
+company_db
+sales_db
+hr_db
+inventory_db
+```
+
+### Why Is It Useful?
+
+* Verify database creation
+* View available databases
+* Navigate between databases
+
+---
+
+## SHOW TABLES
+
+Displays all tables inside the currently selected database.
+
+### Syntax
+
+```sql
+SHOW TABLES;
+```
+
+### Example Output
+
+```text
+employees
+departments
+customers
+orders
+```
+
+### Why Is It Useful?
+
+* Verify table creation
+* View available tables
+* Explore database structure
+
+---
+
+## DESCRIBE TABLE
+
+Displays the structure of a table.
+
+### Syntax
+
+```sql
+DESC employees;
+```
+
+or
+
+```sql
+DESCRIBE employees;
+```
+
+### Example Output
+
+| Field         | Type          | Null | Key |
+| ------------- | ------------- | ---- | --- |
+| employee_id   | int           | NO   | PRI |
+| employee_name | varchar(100)  | NO   |     |
+| salary        | decimal(10,2) | YES  |     |
+
+### Why Is It Useful?
+
+It helps developers quickly understand:
+
+* Column names
+* Data types
+* Constraints
+* Primary keys
+* NULL settings
+
+---
+
+## Additional ALTER TABLE Operations
+
+### Add Column
+
+```sql
+ALTER TABLE employees
+ADD department VARCHAR(50);
+```
+
+Used when a new column is required.
+
+---
+
+### Modify Column
+
+```sql
+ALTER TABLE employees
+MODIFY salary DECIMAL(15,2);
+```
+
+Used when changing a column's data type or size.
+
+---
+
+### Rename Column
+
+```sql
+ALTER TABLE employees
+RENAME COLUMN employee_name TO full_name;
+```
+
+Used when column names need improvement or business requirements change.
+
+---
+
+### Drop Column
+
+```sql
+ALTER TABLE employees
+DROP COLUMN department;
+```
+
+Used when a column is no longer needed.
+
+⚠️ Warning: All data stored in the column will be permanently lost.
+
+---
+
+### Add Constraint
+
+```sql
+ALTER TABLE employees
+ADD CONSTRAINT pk_employee
+PRIMARY KEY(employee_id);
+```
+
+Used when constraints were not defined during table creation.
+
+---
+
+## Best Practices
+
+### Always Use Meaningful Names
+
+✅ Good
+
+```sql
+employees
+customers
+orders
+```
+
+❌ Bad
+
+```sql
+table1
+data
+test
+```
+
+---
+
+### Use IF EXISTS and IF NOT EXISTS
+
+These clauses make scripts safer and prevent unnecessary errors.
+
+---
+
+### Verify Before DROP
+
+Before executing:
+
+```sql
+DROP TABLE employees;
+```
+
+Always ensure the table is no longer needed.
+
+DROP commands can permanently remove data and structure.
+
+---
+
+### Use DESCRIBE Frequently
+
+Before writing queries on an unfamiliar table:
+
+```sql
+DESC employees;
+```
+
+This helps understand the table structure and avoid mistakes.
+
+---
+
+## Quick Revision
+
+| Command         | Purpose                |
+| --------------- | ---------------------- |
+| CREATE DATABASE | Creates a database     |
+| CREATE TABLE    | Creates a table        |
+| ALTER TABLE     | Modifies a table       |
+| RENAME TABLE    | Renames a table        |
+| TRUNCATE TABLE  | Removes all rows       |
+| DROP TABLE      | Removes table and data |
+| DROP DATABASE   | Removes database       |
+| SHOW DATABASES  | Lists databases        |
+| SHOW TABLES     | Lists tables           |
+| DESCRIBE        | Shows table structure  |
